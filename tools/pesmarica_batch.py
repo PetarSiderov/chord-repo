@@ -67,9 +67,10 @@ def process_csv(csv_path, output_dir='lyrics-output'):
             print(f"\n[{row_num}] Processing: {artist} - {title}")
             
             # Build command
+            script_path = Path(__file__).parent / 'pesmarica_to_chordpro.py'
             cmd = [
                 sys.executable,
-                'tools/pesmarica_to_chordpro.py',
+                str(script_path),
                 '--url', url,
                 '--title', title,
                 '--artist', artist,

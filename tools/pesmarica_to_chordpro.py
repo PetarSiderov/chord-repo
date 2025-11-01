@@ -233,8 +233,13 @@ def main():
     parser.add_argument('--tempo', type=int, help='Tempo in BPM')
     parser.add_argument('--meter', help='Time signature (e.g., 4/4, 3/4)')
     parser.add_argument('--docx', action='store_true', help='Generate .docx file')
-    parser.add_argument('--keep-tabs', action='store_true', help='Keep ASCII guitar tabs')
-    parser.add_argument('--strip-tabs', action='store_true', help='Strip ASCII guitar tabs (default)')
+    
+    # Mutually exclusive group for tab handling
+    tab_group = parser.add_mutually_exclusive_group()
+    tab_group.add_argument('--keep-tabs', action='store_true', help='Keep ASCII guitar tabs')
+    tab_group.add_argument('--strip-tabs', action='store_true', default=True, 
+                          help='Strip ASCII guitar tabs (default)')
+    
     parser.add_argument('--piano-hints', action='store_true', help='Add piano solo adaptation hints')
     parser.add_argument('--output-dir', default='lyrics-output', help='Output directory')
     
@@ -245,7 +250,7 @@ def main():
     output_dir.mkdir(exist_ok=True)
     
     # Determine if we should keep tabs (default is to strip them)
-    keep_tabs = args.keep_tabs and not args.strip_tabs
+    keep_tabs = args.keep_tabs
     
     print(f"Fetching: {args.title} - {args.artist}")
     print(f"URL: {args.url}")
