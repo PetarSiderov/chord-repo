@@ -1,0 +1,41 @@
+name: Lyrics generator
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+  
+  # Run on pull requests to validate it works
+  pull_request:
+    paths:
+      - 'data/song-sources.csv'
+      - 'tools/pesmarica_*.py'
+      - '.github/workflows/lyrics-generate.yml'
+
+jobs:
+  generate-lyrics:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 python-docx
+      
+      - name: Run batch lyrics generator
+        run: |
+          python tools/pesmarica_batch.py data/song-sources.csv
+      
+      - name: Upload generated lyrics as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lyrics-output
+          path: lyrics-output/
+          retention-days: 30
+          if-no-files-found: error
