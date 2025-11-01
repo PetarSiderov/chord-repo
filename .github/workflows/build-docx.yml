@@ -1,0 +1,56 @@
+name: Build DOCX from Markdown
+
+on:
+  pull_request:
+    paths:
+      - 'Repertoar-Balkan-4h.md'
+      - '.github/workflows/build-docx.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'Repertoar-Balkan-4h.md'
+      - '.github/workflows/build-docx.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-docx:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install Pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+      
+      - name: Convert Markdown to DOCX
+        run: |
+          pandoc Repertoar-Balkan-4h.md -o Repertoar-Balkan-4h.docx \
+            --from markdown \
+            --to docx \
+            --standalone
+      
+      - name: Upload DOCX as artifact (PR only)
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Repertoar-Balkan-4h
+          path: Repertoar-Balkan-4h.docx
+          retention-days: 30
+      
+      - name: Commit and push DOCX (main branch only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'Repertoar-Balkan-4h.docx'
+          message: 'Auto-generate Repertoar-Balkan-4h.docx from Markdown [skip ci]'
+          author_name: 'GitHub Actions'
+          author_email: 'actions@github.com'
+          push: true
