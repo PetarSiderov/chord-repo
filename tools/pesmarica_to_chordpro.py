@@ -5,6 +5,7 @@ Scrapes song lyrics and chords from pesmarica.rs and converts to ChordPro format
 """
 
 import argparse
+import os
 import re
 import sys
 import unicodedata
@@ -163,8 +164,6 @@ def convert_to_chordpro(lyrics, title, artist, key=None, tempo=None, meter=None,
 
 def save_to_file(content, filename, output_dir='lyrics-output'):
     """Save content to a file in the output directory."""
-    import os
-    
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
@@ -185,8 +184,6 @@ def create_docx(chordpro_content, filename, output_dir='lyrics-output'):
         print("python-docx not installed. Skipping DOCX generation.", file=sys.stderr)
         print("Install with: pip install python-docx", file=sys.stderr)
         return None
-    
-    import os
     
     doc = Document()
     
@@ -261,8 +258,6 @@ def main():
     parser.add_argument('--docx', action='store_true', help='Generate DOCX file')
     parser.add_argument('--keep-tabs', action='store_true', 
                        help='Keep guitar TAB lines (default: strip them)')
-    parser.add_argument('--strip-tabs', action='store_true', dest='strip_tabs',
-                       help='Strip guitar TAB lines (default behavior)')
     parser.add_argument('--piano-hints', action='store_true',
                        help='Add piano solo hints based on key')
     parser.add_argument('--output-dir', default='lyrics-output',
