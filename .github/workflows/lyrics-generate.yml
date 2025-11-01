@@ -8,6 +8,9 @@ on:
       - 'data/song-sources.csv'
       - '.github/workflows/lyrics-generate.yml'
 
+permissions:
+  contents: read
+
 jobs:
   generate-lyrics:
     runs-on: ubuntu-latest
