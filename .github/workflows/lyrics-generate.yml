@@ -1,0 +1,42 @@
+name: Generate Lyrics Artifacts
+
+on:
+  workflow_dispatch:  # Manual trigger from Actions tab
+  pull_request:       # Trigger on PRs to validate changes
+    paths:
+      - 'tools/**'
+      - 'data/song-sources.csv'
+      - '.github/workflows/lyrics-generate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  generate-lyrics:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 python-docx
+      
+      - name: Run batch processor
+        run: |
+          python tools/pesmarica_batch.py data/song-sources.csv
+      
+      - name: Upload lyrics artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lyrics-output
+          path: lyrics-output/
+          retention-days: 30
+          if-no-files-found: error
