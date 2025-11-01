@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 # Purpose: For personal/educational use. Converts a Pesmarica.rs song page to ChordPro (.pro).
 # NOTE: Do not commit generated .pro files to a public repo without rights.
-# Usage:
-#   python tools/pesmarica_to_chordpro.py --url "https://www.pesmarica.rs/akordi/2866/Divlje-Jagode--Marija" --title "Marija" --artist "Divlje Jagode"
-# Optional:
-#   --docx will also render a simple .docx (requires python-docx)
+# Usage (single):
+#   python tools/pesmarica_to_chordpro.py --url "https://www.pesmarica.rs/akordi/350/Crvena-Jabuka--Nekako-s-Prole%C4%87a" --title "Nekako s Proleća" --artist "Crvena Jabuka" --key "G" --tempo 74 --meter "4/4" --docx --piano-hints --strip-tabs
 #
 # Limitations:
-# - Site structure may change; adjust CSS selectors accordingly.
-# - This script is for local use only; respect website TOS and copyright.
+# - Site structure may change; adjust selectors accordingly.
+# - This script is for local/offline personal use; respect site TOS and copyright.
 
 import argparse
 import os
@@ -24,64 +22,77 @@ except Exception:
     sys.exit(1)
 
 def extract_text_blocks(html):
-    """
-    Heuristic extraction: Pesmarica often renders lyrics+chords in <pre> or a content div.
-    We try common containers. Adjust if site layout changes.
-    """
     soup = BeautifulSoup(html, "html.parser")
-
-    # Try <pre> first
+    # Prefer <pre>
     pre = soup.find("pre")
     if pre and pre.get_text(strip=False):
         return pre.get_text(strip=False)
-
-    # Try main content divs
-    for sel in ["div.song", "div#song", "div.content", "article"]:
+    # Try known containers
+    for sel in ["div.song", "div#song", "div.content", "article", "div.post-entry"]:
         node = soup.select_one(sel)
         if node and node.get_text(strip=False):
             return node.get_text(strip=False)
-
-    # Fallback: body text
     body = soup.find("body")
     return body.get_text("\n", strip=False) if body else ""
 
 CHORD_TOKEN = re.compile(r"\b([A-G](?:#|b)?m?(?:maj7|m7|7|sus2|sus4|dim|aug)?)(/[A-G](?:#|b)?)?\b")
+TAB_LINE = re.compile(r"^\s*([eE]|B|G|D|A)\s*\|.*")  # crude ASCII TAB detector
 
-def to_chordpro(raw_text, title, artist, key=None, tempo=None, meter=None):
-    """
-    Convert mixed text to a simple ChordPro:
-    - Lines with many chord tokens are preserved; lyrics lines kept as-is.
-    - Wrap chords inline like [Am] in front of the following lyric chunk (very heuristic).
-    """
+def piano_hint_block(key: str):
+    scale = {
+        "G": "G major (G A B C D E F#) / Em pentatonic (E G A B D)",
+        "F#m": "F# natural minor / A major",
+        "Am": "A natural minor (A B C D E F G) / A minor pentatonic (A C D E G)",
+        "Em": "E natural minor (E F# G A B C D) / E minor pentatonic (E G A B D)",
+        "Dm": "D natural minor / D minor pentatonic",
+        "Fm": "F natural minor",
+        "Cm": "C natural minor",
+        "F": "F major (F G A Bb C D E)",
+        "D": "D major (D E F# G A B C#)"
+    }.get(key, f"{key} scale (relative major/minor) + minor pentatonic")
+    lines = [
+        "{comment: Piano solo adaptation hints}",
+        f"{{comment: Key center: {key}; Use scale: {scale}}}",
+        "{comment: Patch: Grand Piano or EP; optional slight delay.}",
+        "{comment: Approach: right-hand plays main guitar lick; left-hand holds chord tones (1-5 or 1-5-8).}",
+        "{comment: Phrase on chord tones; use neighbor notes and slides between scale tones.}"
+    ]
+    return "\n".join(lines)
+
+def to_chordpro(raw_text, title, artist, key=None, tempo=None, meter=None, keep_tabs=False, piano_hints=False, source_url=None):
     lines = raw_text.splitlines()
     out = []
-    out.append(f"{title: {title}}")
+    out.append(f"{{title: {title}}}")
     if artist:
-        out.append(f"{artist: {artist}}")
+        out.append(f"{{artist: {artist}}}")
+    if source_url:
+        out.append(f"{{comment: Source: {source_url}}}")
     if key:
-        out.append(f"{key: {key}}")
+        out.append(f"{{key: {key}}}")
     if tempo:
-        out.append(f"{tempo: {tempo}}")
+        out.append(f"{{tempo: {tempo}}}")
     if meter:
-        out.append(f"{time: {meter}}")
+        out.append(f"{{time: {meter}}}")
     out.append("")
 
     for line in lines:
-        # Normalize tabs
         line = line.replace("\t", "    ")
-        # If it's a pure chord line (mostly chords and spaces), keep as-is
+        if not keep_tabs and TAB_LINE.match(line):
+            # Skip ASCII TAB lines if we don't keep them
+            continue
         tokens = CHORD_TOKEN.findall(line)
         text_only = CHORD_TOKEN.sub("", line).strip()
         if tokens and not text_only:
-            # Convert chord tokens to [Chord]
-            def wrap_chord(m):
-                return f"[{m.group(0)}]"
-            out.append(CHORD_TOKEN.sub(wrap_chord, line))
+            def wrap(m): return f"[{m.group(0)}]"
+            out.append(CHORD_TOKEN.sub(wrap, line))
         else:
-            # Leave lyrics or mixed lines as-is; optional: try to inline chords
             out.append(line)
+
     out.append("")
-    out.append(f"{comment: Generated locally on {datetime.now().strftime('%Y-%m-%d %H:%M')}}")
+    if piano_hints and key:
+        out.append(piano_hint_block(key))
+        out.append("")
+    out.append(f"{{comment: Generated locally on {datetime.now().strftime('%Y-%m-%d %H:%M')}}}")
     return "\n".join(out)
 
 def main():
@@ -92,16 +103,24 @@ def main():
     ap.add_argument("--key", default=None)
     ap.add_argument("--tempo", default=None)
     ap.add_argument("--meter", default=None)
-    ap.add_argument("--outdir", default="lyrics-output", help="Output directory for .pro")
+    ap.add_argument("--outdir", default="lyrics-output", help="Output directory for .pro/.docx")
     ap.add_argument("--docx", action="store_true", help="Also export a basic .docx (requires python-docx)")
+    ap.add_argument("--keep-tabs", action="store_true", help="Keep ASCII TAB lines")
+    ap.add_argument("--strip-tabs", action="store_true", help="Force strip guitar TAB lines")
+    ap.add_argument("--piano-hints", action="store_true", help="Append piano solo adaptation hints block")
     args = ap.parse_args()
 
     os.makedirs(args.outdir, exist_ok=True)
-    resp = requests.get(args.url, timeout=20)
+    resp = requests.get(args.url, timeout=25)
     resp.raise_for_status()
 
     raw = extract_text_blocks(resp.text)
-    chordpro = to_chordpro(raw, args.title, args.artist, args.key, args.tempo, args.meter)
+    keep_tabs = True if args.keep_tabs else False
+    if args.strip_tabs:
+        keep_tabs = False
+
+    chordpro = to_chordpro(raw, args.title, args.artist, args.key, args.tempo, args.meter,
+                           keep_tabs=keep_tabs, piano_hints=args.piano_hints, source_url=args.url)
 
     safe_title = re.sub(r"[^A-Za-z0-9._-]+", "_", f"{args.artist}-{args.title}")
     pro_path = os.path.join(args.outdir, f"{safe_title}.pro")
@@ -112,14 +131,12 @@ def main():
     if args.docx:
         try:
             from docx import Document
-            from docx.shared import Pt
         except Exception:
             print("Install python-docx for DOCX export: pip install python-docx")
             return
         doc = Document()
         doc.add_heading(f"{args.title} — {args.artist}", 1)
-        p = doc.add_paragraph(chordpro)
-        # Using default style; monospace style varies by template
+        doc.add_paragraph(chordpro)
         docx_path = os.path.join(args.outdir, f"{safe_title}.docx")
         doc.save(docx_path)
         print(f"Wrote {docx_path}")
