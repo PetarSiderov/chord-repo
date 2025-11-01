@@ -29,7 +29,7 @@
 - **Тонација**: Em
 - **BPM**: 120-130
 - **Метар**: 7/8 (3+2+2)
-- **EK-50 Стил**: Balkan 7/8 или World – Balkan (ако недостига, користи Traditional 7/8 или World Beat со мануелна адаптација)
+- **EK-50 Стил**: Balkan 7/8 или World – Balkan (ако недостига, користи Traditional 7/8 или World Beat со мануелно адаптација)
 - **Вариации**: VAR1 (интро), VAR2 (темата), VAR3 (соло), VAR4 (финале)
 - **STS**: Piano (EP), Strings, Brass
 
@@ -203,7 +203,7 @@
 - **Тонација**: Am
 - **BPM**: 90-100
 - **Метар**: 4/4
-- **EK-50 Стил**: Rumba Latin або Slow Rumba
+- **EK-50 Стил**: Rumba Latin или Slow Rumba
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Strings, Guitar
 
@@ -411,7 +411,7 @@
 - **Тонација**: A
 - **BPM**: 128-138
 - **Метар**: 4/4
-- **EK-50 Стил**: 16Beat Pop або Pop Rock
+- **EK-50 Стил**: 16Beat Pop или Pop Rock
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: EP, Brass, Piano
 
@@ -649,7 +649,7 @@
 - **Тонација**: G
 - **BPM**: 120-130
 - **Метар**: 4/4
-- **EK-50 Стил**: Cha-Cha або Latin Pop
+- **EK-50 Стил**: Cha-Cha или Latin Pop
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Brass, Percussion
 
@@ -693,7 +693,7 @@
 - **Тонација**: Dm
 - **BPM**: 118-128
 - **Метар**: 4/4
-- **EK-50 Стил**: Cha-Cha або Latin Pop
+- **EK-50 Стил**: Cha-Cha или Latin Pop
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Brass, Strings
 
@@ -717,7 +717,7 @@
 - **Тонација**: Am
 - **BPM**: 120-140
 - **Метар**: 4/4 (cocek beat 2+2+2+2)
-- **EK-50 Стил**: Cocek (World – Oriental) або Balkan Beat
+- **EK-50 Стил**: Cocek (World – Oriental) или Balkan Beat
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (рефрен), VAR4 (solo/outro)
 - **STS**: Clarinet, Trumpet, Strings, Percussion
 
@@ -761,7 +761,7 @@
 - **Тонација**: Am
 - **BPM**: 130-140
 - **Метар**: 4/4
-- **EK-50 Стил**: Cocek або Oriental
+- **EK-50 Стил**: Cocek или Oriental
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (solo/outro)
 - **STS**: Clarinet, Trumpet, Percussion
 
@@ -901,7 +901,7 @@
 - **Тонација**: D
 - **BPM**: 165-185
 - **Метар**: 2/4
-- **EK-50 Стил**: March або Polka (Fast)
+- **EK-50 Стил**: March или Polka (Fast)
 - **Вариации**: VAR1 (intro), VAR2 (kolo tema), VAR3 (variacija), VAR4 (brzo/finale)
 - **STS**: Accordion, Brass, Clarinet
 
@@ -917,7 +917,7 @@
 - **Тонација**: Am
 - **BPM**: 170-190
 - **Метар**: 2/4
-- **EK-50 Стил**: March або Polka (Fast)
+- **EK-50 Стил**: March или Polka (Fast)
 - **Вариации**: VAR1 (intro), VAR2 (kolo tema), VAR3 (variacija), VAR4 (brzo/finale)
 - **STS**: Accordion, Brass, Clarinet
 
@@ -935,7 +935,7 @@
 - **Тонација**: Am
 - **BPM**: 85-95
 - **Метар**: 4/4
-- **EK-50 Стил**: March Ballad або Pop Ballad (со хармоника STS)
+- **EK-50 Стил**: March Ballad или Pop Ballad (со хармоника STS)
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Accordion, Piano, Strings
 
@@ -1047,7 +1047,7 @@
 - **Тонација**: Am
 - **BPM**: 125-135
 - **Метар**: 4/4
-- **EK-50 Стил**: 16Beat Pop або Pop Rock
+- **EK-50 Стил**: 16Beat Pop или Pop Rock
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Strings, Brass
 
@@ -1091,7 +1091,7 @@
 - **Тонација**: Dm
 - **BPM**: 115-125
 - **Метар**: 4/4
-- **EK-50 Стил**: Pop Ballad або 16Beat Pop
+- **EK-50 Стил**: Pop Ballad или 16Beat Pop
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Strings, EP
 
@@ -1113,7 +1113,7 @@
 - **Тонација**: Am
 - **BPM**: 130-140
 - **Метар**: 4/4
-- **EK-50 Стил**: 16Beat Pop або Dance Pop
+- **EK-50 Стил**: 16Beat Pop или Dance Pop
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Strings, Brass
 
@@ -1379,7 +1379,7 @@
 - **Тонација**: Am
 - **BPM**: 130-140
 - **Метар**: 4/4
-- **EK-50 Стил**: Latin Pop або Rumba (brza)
+- **EK-50 Стил**: Latin Pop или Rumba (brza)
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Brass, Strings
 
@@ -1467,7 +1467,7 @@
 - **Тонација**: Gm
 - **BPM**: 118-128
 - **Метар**: 4/4
-- **EK-50 Стил**: 16Beat Pop або Dance Pop
+- **EK-50 Стил**: 16Beat Pop или Dance Pop
 - **Вариации**: VAR1 (intro), VAR2 (strofa), VAR3 (refren), VAR4 (outro)
 - **STS**: Piano, Strings, Brass
 
