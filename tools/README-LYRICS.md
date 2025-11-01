@@ -21,14 +21,6 @@ You need Python 3.7+ and the following packages:
 pip install requests beautifulsoup4 python-docx
 ```
 
-Or install from a requirements file:
-
-```bash
-pip install -r tools/requirements.txt
-```
-
-(Note: `requirements.txt` lists: `requests`, `beautifulsoup4`, `python-docx`)
-
 ### GitHub Actions
 
 No local installation needed! The GitHub Actions workflow automatically installs dependencies and runs the batch processor. Generated files are uploaded as workflow artifacts.
